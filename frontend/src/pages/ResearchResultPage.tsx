@@ -276,7 +276,7 @@ export default function ResearchResultPage() {
         <div className="absolute top-0 right-0 w-64 h-64 bg-blue-600/10 rounded-full blur-3xl pointer-events-none" />
 
         <div className="relative z-10">
-          <h1 className="text-3xl font-extrabold text-white tracking-tight bg-gradient-to-br from-white to-slate-400 bg-clip-text text-transparent">
+          <h1 className="text-3xl font-extrabold text-white tracking-tight bg-linear-to-br from-white to-slate-400 bg-clip-text">
             {companyName}
           </h1>
 
@@ -319,7 +319,7 @@ export default function ResearchResultPage() {
           <CardContent className="pt-6">
             <div className="h-2 overflow-hidden rounded-full bg-slate-800/80 shadow-inner">
               <div
-                className="h-full rounded-full bg-gradient-to-r from-blue-500 to-indigo-500 shadow-[0_0_10px_rgba(59,130,246,0.5)] transition-all duration-700 ease-out"
+                className="h-full rounded-full bg-linear-to-r from-blue-500 to-indigo-500 shadow-[0_0_10px_rgba(59,130,246,0.5)] transition-all duration-700 ease-out"
                 style={{
                   width: `${Number(research.progress ?? 0)}%`,
                 }}
