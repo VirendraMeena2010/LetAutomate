@@ -102,7 +102,12 @@ export function CompanyCreateForm() {
       country: data.country,
       linkedin_company_page: data.linkedinPage || undefined,
       services_description: data.servicesDescription || undefined,
-      target_industries: data.targetIndustries || undefined,
+      target_industries: data.targetIndustries
+  ? data.targetIndustries
+      .split(',')
+      .map((item) => item.trim())
+      .filter(Boolean)
+  : [],
       preferred_company_size: data.preferredCompanySize || undefined,
       brand_voice: data.brandVoice || undefined,
       default_cta: data.defaultCta || undefined,

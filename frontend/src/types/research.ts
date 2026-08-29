@@ -65,3 +65,10 @@ export interface GuestResearchRequest {
   target_company_website: string
   your_services: string
 }
+
+
+export interface EvidenceItem {
+  source: string
+  finding: string
+  confidence: number
+}

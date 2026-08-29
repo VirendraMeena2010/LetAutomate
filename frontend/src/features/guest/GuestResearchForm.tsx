@@ -56,7 +56,7 @@ export function GuestResearchForm() {
     guestMutation.mutate({
       target_company_name: data.target_company_name,
       target_company_industry: data.target_company_industry,
-      target_company_website: data.target_company_website || undefined,
+      target_company_website: data.target_company_website || '',
       your_services: data.your_services,
     })
   }
