@@ -23,6 +23,7 @@ interface ConcluderResult {
     company_name: string;
     company_industry: string;
     company_icp_match_score: number;
+    company_icp_match_level: string; // <-- Added ICP Match Level
     company_business_signals: string;
     final_conclusion: string;
 }
@@ -79,11 +80,26 @@ export default function GuestPage() {
         }
     };
 
-    // Helper for score color
+    // Helper for score text color
     const getScoreColor = (score: number) => {
         if (score >= 80) return 'text-emerald-400 drop-shadow-[0_0_10px_rgba(52,211,153,0.8)]';
         if (score >= 50) return 'text-amber-400 drop-shadow-[0_0_10px_rgba(251,191,36,0.8)]';
         return 'text-rose-400 drop-shadow-[0_0_10px_rgba(251,113,133,0.8)]';
+    };
+
+    // Helper for match level badge styling
+    const getLevelColor = (level: string) => {
+        const lowerLevel = level?.toLowerCase() || '';
+        if (lowerLevel.includes('high') || lowerLevel.includes('strong')) {
+            return 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20';
+        }
+        if (lowerLevel.includes('medium') || lowerLevel.includes('moderate')) {
+            return 'bg-amber-500/10 text-amber-400 border-amber-500/20';
+        }
+        if (lowerLevel.includes('low') || lowerLevel.includes('weak')) {
+            return 'bg-rose-500/10 text-rose-400 border-rose-500/20';
+        }
+        return 'bg-slate-800 text-slate-300 border-slate-700'; // Default fallback
     };
 
     return (
@@ -266,13 +282,20 @@ export default function GuestPage() {
                                             {result.company_industry}
                                         </span>
                                     </div>
-                                    <div className="text-center bg-slate-950 p-4 rounded-2xl border border-slate-800 shadow-[0_0_15px_rgba(0,0,0,0.5)]">
+                                    
+                                    {/* Score & Match Level Block */}
+                                    <div className="flex flex-col items-center bg-slate-950 p-4 rounded-2xl border border-slate-800 shadow-[0_0_15px_rgba(0,0,0,0.5)] min-w-35">
                                         <div className={`text-4xl font-black ${getScoreColor(result.company_icp_match_score)}`}>
                                             {result.company_icp_match_score}
                                         </div>
                                         <div className="text-xs text-slate-500 font-bold uppercase tracking-wider mt-1">
                                             ICP Match Score
                                         </div>
+                                        {result.company_icp_match_level && (
+                                            <div className={`mt-3 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest border ${getLevelColor(result.company_icp_match_level)}`}>
+                                                {result.company_icp_match_level}
+                                            </div>
+                                        )}
                                     </div>
                                 </div>
 

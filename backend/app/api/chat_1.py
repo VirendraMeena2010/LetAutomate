@@ -5,5 +5,5 @@ chat_router=APIRouter()
 
 @chat_router.post("/chat")
 async def chat(data:ChatRequest):
-    result = agent.invoke({"company_name": data.company_name})
-    return {"summary": result["final_summary"]}  
+    result = agent.invoke({"company_name": data.company_name,"industry":data.industry,"your_service":data.your_service})
+    return {"summary": result["conclusion"]}  

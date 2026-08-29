@@ -1,48 +1,99 @@
+from typing import List, Literal, Optional
+from pydantic import BaseModel, Field
+from langchain.agents import create_agent
+from langchain.agents.structured_output import ToolStrategy
+from app.services.brain.llm import primary_llm, fallback_llm
+from app.services.tools import web_search
 
-import os
-from dotenv import load_dotenv
-
-from langchain_tavily import TavilySearch
-
-from app.services.brain.state import AgentState
-
-load_dotenv()
-
-tavily_search = TavilySearch(
-    tavily_api_key="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",
-    max_results=5,
-    topic="general",
-)
-
-
-def news_research(state: AgentState):
-    """
-    Search the web for the latest information about a company.
-
-    This node is responsible only for retrieving information.
-    It does NOT summarize or analyze the results.
-    """
-
-    company = state["company_name"]
-
-    query = f"""
-    {company} latest news
-    important announcements
-    funding
-    product launches
-    partnerships
-    acquisitions
-    significant business events
-    """
-
-    search_results = tavily_search.invoke(
-        {
-            "query": query,
-            "search_depth": "advanced",
-        }
+# ============================================================
+# Business Signal
+# ============================================================
+class BusinessSignal(BaseModel):
+    signal_type: Literal[
+        "funding", "hiring", "acquisition", "partnership",
+        "press_release", "product_launch", "geographic_expansion",
+    ] = Field(description="Category of the business signal.")
+    title: str = Field(description="Title of the news article or business announcement.")
+    description: str = Field(description="Concise factual description of the business signal.")
+    source_url: str = Field(description="URL of the strongest available source.")
+    published_date: Optional[str] = Field(
+        default=None,
+        description="Publication date in YYYY-MM-DD format when available. Return null if it cannot be reliably determined.",
+    )
+    confidence: Literal["high", "medium", "low"] = Field(
+        description="Confidence in the accuracy and relevance of the signal."
     )
 
-    return {
-        "news_articles": search_results,
-    }
+# ============================================================
+# Main Output
+# ============================================================
+class NewsIntelligenceOutput(BaseModel):
+    signals: List[BusinessSignal] = Field(
+        default_factory=list,
+        description="Recent and relevant business signals.",
+    )
 
+# ============================================================
+# System Prompt
+# ============================================================
+SYSTEM_PROMPT = """
+You are Agent 4 — News Intelligence Agent for AgentReach.
+
+Your responsibility is to identify recent and meaningful business
+signals about a target company.
+
+You have access to the web_search tool.
+
+============================================================
+INPUT & RESEARCH OBJECTIVE
+============================================================
+The user will provide company information.
+Identify recent business signals related to:
+- Funding, Hiring, Acquisitions, Partnerships, Press releases, Product launches, Geographic expansion.
+
+Prioritize results from the last 12 months. Do not include results older than 24 months.
+Never invent publication dates. If a reliable publication date cannot be established, return null.
+
+============================================================
+COMPANY VERIFICATION & DUPLICATES
+============================================================
+Before accepting a result, verify that it refers to the target company.
+If multiple sources report the same underlying event:
+- Treat them as one signal.
+- Keep only the strongest source.
+
+============================================================
+FACTUAL ACCURACY
+============================================================
+Never invent facts, URLs, publication dates, funding amounts, acquisitions, hiring numbers, partnerships, or product launches.
+Only report information supported by the source. If no relevant signals are discovered, return an empty list.
+
+============================================================
+OUTPUT FORMAT (CRITICAL)
+============================================================
+YOU MUST CALL THE PROVIDED STRUCTURED OUTPUT TOOL WITH YOUR FINAL ANSWER.
+DO NOT return plain conversational text or markdown blocks. 
+You must ONLY output the strictly formatted JSON defined by the NewsIntelligenceOutput schema.
+"""
+
+# ============================================================
+# Primary Agent
+# ============================================================
+primary_agent = create_agent(
+    model=primary_llm,
+    tools=[web_search],
+    system_prompt=SYSTEM_PROMPT,
+    response_format=ToolStrategy(NewsIntelligenceOutput),
+)
+
+# ============================================================
+# Fallback Agent
+# ============================================================
+fallback_agent = create_agent(
+    model=fallback_llm,
+    tools=[web_search],
+    system_prompt=SYSTEM_PROMPT,
+    response_format=ToolStrategy(NewsIntelligenceOutput),
+)
+
+news_intelligence_agent = primary_agent

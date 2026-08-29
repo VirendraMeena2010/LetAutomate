@@ -1,21 +1,40 @@
 from contextlib import asynccontextmanager
-import uvicorn
+
 import logfire
 from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware  # <-- 1. Added this import
+from fastapi.middleware.cors import CORSMiddleware
 
-#from app.api.chat import chat_router
+from app.api.auth.owner import owner_router
+from app.api.auth.service_providers_company import (
+    serviceprovidercompany_router,
+)
+from app.api.chat.chat_session import router
 from app.api.guestmode import guest_mode_router
+
 from app.core.config import settings
+from app.core.database import init_db
 from app.core.observability import setup_observability
 
 
+# ============================================================
+# Application lifespan
+# ============================================================
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+
     setup_observability()
-    logfire.instrument_fastapi(app)
+
+    # Logfire FastAPI instrumentation
+    if settings.LOGFIRE_TOKEN:
+        logfire.instrument_fastapi(app)
+
     yield
 
+
+# ============================================================
+# FastAPI application
+# ============================================================
 
 app = FastAPI(
     title=settings.APP_NAME,
@@ -23,19 +42,58 @@ app = FastAPI(
     lifespan=lifespan,
 )
 
-# --- 2. Added CORS Middleware Block ---
+
+# ============================================================
+# CORS
+# ============================================================
+
+origins = [
+    "http://localhost:3000",
+    "http://localhost:5173",
+    "http://127.0.0.1:3000",
+    "http://127.0.0.1:5173",
+]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Allows all origins for local development
+    allow_origins=origins,       # Or ["*"] during local development
     allow_credentials=True,
-    allow_methods=["*"],  # Allows all HTTP methods (GET, POST, etc.)
-    allow_headers=["*"],  # Allows all headers
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
-# --------------------------------------
 
-#app.include_router(chat_router)
-app.include_router(guest_mode_router)
 
+# ============================================================
+# Routers
+# ============================================================
+
+app.include_router(
+    guest_mode_router
+)
+
+app.include_router(
+    router
+)
+
+app.include_router(
+    serviceprovidercompany_router
+)
+
+app.include_router(
+    owner_router
+)
+
+
+# ============================================================
+# Database
+# ============================================================
+
+init_db()
+
+
+# ============================================================
+# Health check
+# ============================================================
 
 @app.get("/")
 async def root():
@@ -44,6 +102,17 @@ async def root():
         "service": settings.APP_NAME,
     }
 
+
+# ============================================================
+# Development server
+# ============================================================
+
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run("app.main:app", host="0.0.0.0", port=8000, reload=True)
+
+    uvicorn.run(
+        "app.main:app",
+        host="0.0.0.0",
+        port=8001,
+        reload=True,
+    )

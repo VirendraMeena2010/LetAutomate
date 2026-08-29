@@ -1,15 +1,25 @@
-from typing import TypedDict,Optional
+from typing import TypedDict,Optional,Literal
 from langgraph.graph import StateGraph,START,END
 from pydantic import BaseModel,Field
+from dotenv import load_dotenv
+import os
 from app.services.brain.llm import llm
 from langchain_community.document_loaders import WebBaseLoader
 from langchain_tavily import TavilySearch
+load_dotenv()
+tavily_api_key=os.getenv("TAVILY_API_KEY")
 tavily_search = TavilySearch(
-    tavily_api_key="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",
+    tavily_api_key=tavily_api_key,
     max_results=5,
     topic="general",
 )
+DB_URL = os.getenv("DATABASE_URL")
 
+if not DB_URL:
+    raise RuntimeError(
+        "DATABASE_URL environment variable is not set. "
+        "Please add DATABASE_URL to your .env file or deployment environment."
+    )
 
 
 class GuestModeInput(BaseModel):
@@ -127,6 +137,7 @@ def news_collector_agent(state:GuestModeState):
 
 class ICP_matcher_result(BaseModel):
     icp_match_score:int
+    icp_match_level:Literal["low","meadium","high"]
     reason_for_match:str
     class Config:
         model_config = {"extra": "forbid"}
@@ -138,7 +149,8 @@ def icp_matcher_agent(state:GuestModeState):
     prompt=f"""
 you are a very intelligent ICP matcher you have to match the ICP for the company:{state["target_company_name"]} and industry:{state['target_company_industry']} with the services you are providing:{state["your_services"]}
     provide the detailed analysis of the match and why it is a good match or not,
-     also consider the news articles:{state["news_articles"]} and website analysis:{state["output_website_analyst"]} and research:{state["output_research_agent"]}     
+     also consider the news articles:{state["news_articles"]} and website analysis:{state["output_website_analyst"]} and research:{state["output_research_agent"]} 
+important ICP matcher score should be between 1 to 100     
     """
     result=icp_matcher_model.invoke(prompt)
     return {
@@ -163,6 +175,7 @@ class concluder_agent_result(BaseModel):
     company_icp_match_score:int
     company_business_signals:str
     final_conclusion:str
+    icp_match_level:Literal["low","meadium","high"]
 
     class Config:
         model_config = {"extra": "forbid"}
@@ -176,64 +189,37 @@ you are the OG intelligent concluder agent you have to provide the final conclus
     return {
         "output":result
     }
+from langgraph.checkpoint.postgres import PostgresSaver
 
-builder=StateGraph(GuestModeState)
+checkpointer_context = PostgresSaver.from_conn_string(DB_URL)
+checkpointer = checkpointer_context.__enter__()
 
+checkpointer.setup()
 
-builder.add_node(
-    "research_agent",
-    research_agent)  
+builder = StateGraph(GuestModeState)
 
+builder.add_node("research_agent", research_agent)
+builder.add_node("website_analyst_agent", website_analyst_agent)
+builder.add_node("news_collector_agent", news_collector_agent)
+builder.add_node("icp_matcher_agent", icp_matcher_agent)
+builder.add_node("busniess_signal_analyst", busniess_signal_analyst)
+builder.add_node("concluder_agent", concluder_agent)
 
+builder.add_edge(START, "research_agent")
+builder.add_edge(START, "website_analyst_agent")
+builder.add_edge(START, "news_collector_agent")
 
-builder.add_node(
-    "website_analyst_agent",
-    website_analyst_agent
+builder.add_edge("research_agent", "busniess_signal_analyst")
+builder.add_edge("website_analyst_agent", "busniess_signal_analyst")
+builder.add_edge("news_collector_agent", "busniess_signal_analyst")
+
+builder.add_edge("research_agent", "icp_matcher_agent")
+builder.add_edge("website_analyst_agent", "icp_matcher_agent")
+builder.add_edge("news_collector_agent", "icp_matcher_agent")
+
+builder.add_edge("busniess_signal_analyst", "concluder_agent")
+builder.add_edge("icp_matcher_agent", "concluder_agent")
+
+agent = builder.compile(
+    checkpointer=checkpointer
 )
-
-"""builder.add_node(
-    "tech_stack_dectector_agent",
-    tech_stack_dectector_agent
-)
-"""
-
-builder.add_node(
-    "news_collector_agent",
-    news_collector_agent
-)
-
-
-builder.add_node(
-    "icp_matcher_agent",
-    icp_matcher_agent
-)
-
-builder.add_node(
-    "busniess_signal_analyst",
-    busniess_signal_analyst
-)
-
-builder.add_node(
-    "concluder_agent",
-    concluder_agent
-)
-
-builder.add_edge(START,"research_agent")
-builder.add_edge(START,"website_analyst_agent")
-#builder.add_edge(START,"tech_stack_dectector_agent")
-builder.add_edge(START,"news_collector_agent")
-builder.add_edge("research_agent","busniess_signal_analyst")
-builder.add_edge("website_analyst_agent","busniess_signal_analyst")
-#builder.add_edge("tech_stack_dectector_agent","busniess_signal_analyst")
-builder.add_edge("news_collector_agent","busniess_signal_analyst")
-
-builder.add_edge("research_agent","icp_matcher_agent")
-builder.add_edge("website_analyst_agent","icp_matcher_agent")
-#builder.add_edge("tech_stack_dectector_agent","icp_matcher_agent")
-builder.add_edge("news_collector_agent","icp_matcher_agent")
-
-builder.add_edge("busniess_signal_analyst","concluder_agent")
-builder.add_edge("icp_matcher_agent","concluder_agent")
-
-
-agent=builder.compile()
