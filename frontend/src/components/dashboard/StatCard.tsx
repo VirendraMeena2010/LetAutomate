@@ -1,4 +1,4 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 
 export function StatCard({
   title,
@@ -32,3 +32,5 @@ export function StatCard({
     </Card>
   )
 }
+
+

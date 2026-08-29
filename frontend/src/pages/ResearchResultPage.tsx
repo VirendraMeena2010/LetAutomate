@@ -7,10 +7,10 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/Card"
-import { Badge } from "@/components/ui/Badge"
-import { Skeleton } from "@/components/ui/Skeleton"
-import { Alert } from "@/components/ui/Alert"
+} from "@/components/ui/card"
+import { Badge } from "@/components/ui/badge"
+import { Skeleton } from "@/components/ui/skeleton"
+import { Alert } from "@/components/ui/alert"
 import {
   ArrowLeft,
   Building2,
@@ -458,3 +458,5 @@ export default function ResearchResultPage() {
     </div>
   )
 }
+
+

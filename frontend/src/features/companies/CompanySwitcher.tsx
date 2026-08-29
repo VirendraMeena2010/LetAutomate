@@ -1,8 +1,8 @@
 import { Link } from 'react-router-dom'
 import { useAuth } from '@/hooks/useAuth'
 import { Building2, Plus, ChevronRight } from 'lucide-react'
-import { Button } from '@/components/ui/Button'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 
 // BACKEND GAP: This component currently only shows the active company.
 // When GET /owner/companies is available, replace with real data.
@@ -68,3 +68,5 @@ export function CompanySwitcher() {
     </div>
   )
 }
+
+

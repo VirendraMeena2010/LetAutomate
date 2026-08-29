@@ -6,13 +6,13 @@ import { z } from 'zod'
 import { useMutation } from '@tanstack/react-query'
 import { authApi } from '@/services/authApi'
 import { useAuth } from '@/hooks/useAuth'
-import { Button } from '@/components/ui/Button'
-import { Input } from '@/components/ui/Input'
-import { Select } from '@/components/ui/Select'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Select } from '@/components/ui/select'
 import { FormField } from '@/components/forms/FormField'
-import { Stepper } from '@/components/ui/Stepper'
-import { Alert } from '@/components/ui/Alert'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card'
+import { Stepper } from '@/components/ui/stepper'
+import { Alert } from '@/components/ui/alert'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { ArrowLeft, ArrowRight, Building2 } from 'lucide-react'
 
 const steps = [
@@ -284,3 +284,5 @@ export function CompanyCreateForm() {
     </div>
   )
 }
+
+

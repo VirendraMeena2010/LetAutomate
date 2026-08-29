@@ -6,11 +6,11 @@ import { useMutation } from '@tanstack/react-query'
 import { Link, useNavigate } from 'react-router-dom'
 import { authApi } from '@/services/authApi'
 import { useAuth } from '@/hooks/useAuth'
-import { Button } from '@/components/ui/Button'
-import { Input } from '@/components/ui/Input'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
 import { FormField } from '@/components/forms/FormField'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card'
-import { Alert } from '@/components/ui/Alert'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Alert } from '@/components/ui/alert'
 import { LogIn, Sparkles } from 'lucide-react'
 
 const ownerSchema = z.object({
@@ -127,3 +127,5 @@ export function LoginPage() {
     </div>
   )
 }
+
+

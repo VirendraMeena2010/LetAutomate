@@ -1,4 +1,4 @@
-import { Button } from '@/components/ui/Button'
+import { Button } from '@/components/ui/button'
 import { Search } from 'lucide-react'
 
 export function EmptyState({
@@ -36,3 +36,5 @@ export function EmptyState({
     </div>
   )
 }
+
+

@@ -17,3 +17,5 @@ export function PainPointList({ painPoints }: { painPoints: string[] }) {
     </div>
   )
 }
+
+

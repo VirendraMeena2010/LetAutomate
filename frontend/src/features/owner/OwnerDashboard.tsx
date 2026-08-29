@@ -2,8 +2,8 @@ import { Link } from 'react-router-dom'
 import { useAuth } from '@/hooks/useAuth'
 import { CompanySwitcher } from '@/features/companies/CompanySwitcher'
 import { CompanyLoginForm } from '@/features/companies/CompanyLoginForm'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card'
-import { Button } from '@/components/ui/Button'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
 import { Plus, User, Mail, Shield } from 'lucide-react'
 
 export function OwnerDashboard() {
@@ -119,3 +119,5 @@ export function OwnerDashboard() {
     </div>
   )
 }
+
+

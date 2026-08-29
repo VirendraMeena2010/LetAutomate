@@ -1,7 +1,7 @@
 import { CompanyLoginForm } from '@/features/companies/CompanyLoginForm'
 import { Building2, ArrowLeft } from 'lucide-react'
 import { Link } from 'react-router-dom'
-import { Button } from '@/components/ui/Button'
+import { Button } from '@/components/ui/button'
 
 export default   function CompanyLoginPage() {
   return (
@@ -29,3 +29,5 @@ export default   function CompanyLoginPage() {
     </div>
   )
 }
+
+

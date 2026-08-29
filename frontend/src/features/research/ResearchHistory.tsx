@@ -1,6 +1,6 @@
-import { Card, CardContent,   } from '@/components/ui/Card'
-import { Badge } from '@/components/ui/Badge'
-import { Button } from '@/components/ui/Button'
+import { Card, CardContent,   } from '@/components/ui/card'
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
 import { EmptyState } from '@/components/dashboard/EmptyState'
 import { Search, ArrowRight } from 'lucide-react'
 import { Link, useParams } from 'react-router-dom'
@@ -91,3 +91,5 @@ export function ResearchHistory() {
     </div>
   )
 }
+
+

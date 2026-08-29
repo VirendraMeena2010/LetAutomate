@@ -1,15 +1,15 @@
 import { Link } from "react-router-dom"
 import { useAuth } from "@/features/auth/AuthContext"
-import { Button } from "@/components/ui/Button"
+import { Button } from "@/components/ui/button"
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/Card"
-import { Skeleton } from "@/components/ui/Skeleton"
-import { Alert } from "@/components/ui/Alert"
+} from "@/components/ui/card"
+import { Skeleton } from "@/components/ui/skeleton"
+import { Alert } from "@/components/ui/alert"
 import { Plus, Building2, ArrowRight } from "lucide-react"
 import { useOwnerCompanies } from "@/hooks/useOwner"
 
@@ -166,3 +166,5 @@ export default function OwnerDashboardPage() {
     </div>
   )
 }
+
+

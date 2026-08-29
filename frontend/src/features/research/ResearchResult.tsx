@@ -1,8 +1,8 @@
 import { useLocation } from 'react-router-dom'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card'
-import { Badge } from '@/components/ui/Badge'
-import { Button } from '@/components/ui/Button'
-import { Alert } from '@/components/ui/Alert'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import { Alert } from '@/components/ui/alert'
 import { ScoreCard } from '@/components/research/ScoreCard'
 import { PainPointList } from '@/components/research/PainPointList'
 import { EvidenceTable } from '@/components/research/EvidenceTable'
@@ -193,3 +193,5 @@ export function ResearchResult() {
     </div>
   )
 }
+
+

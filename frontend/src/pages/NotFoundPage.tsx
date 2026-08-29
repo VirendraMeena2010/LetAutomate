@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { Button } from '@/components/ui/Button'
+import { Button } from '@/components/ui/button'
 import { AlertTriangle, Home } from 'lucide-react'
 
 export function NotFoundPage() {
@@ -36,3 +36,5 @@ export function NotFoundPage() {
     </div>
   )
 }
+
+

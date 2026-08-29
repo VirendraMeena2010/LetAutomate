@@ -2,16 +2,16 @@ import { Link, Navigate } from "react-router-dom"
 import { useQuery } from "@tanstack/react-query"
 import { useAuth } from "@/features/auth/AuthContext"
 import { researchApi } from "@/services/researchApi"
-import { Button } from "@/components/ui/Button"
+import { Button } from "@/components/ui/button"
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/Card"
-import { Alert } from "@/components/ui/Alert"
-import { Skeleton } from "@/components/ui/Skeleton"
+} from "@/components/ui/card"
+import { Alert } from "@/components/ui/alert"
+import { Skeleton } from "@/components/ui/skeleton"
 import {
   Plus,
   Search,
@@ -312,3 +312,5 @@ export default function CompanyDashboardPage() {
     </div>
   )
 }
+
+

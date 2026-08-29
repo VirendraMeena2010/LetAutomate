@@ -6,17 +6,17 @@ import { useNavigate, Link } from "react-router-dom"
 import { researchApi } from "@/services/researchApi"
 import { useAuth } from "@/features/auth/AuthContext"
 import type { ResearchResponse } from "@/types/research"
-import { Button } from "@/components/ui/Button"
-import { Input } from "@/components/ui/Input"
-import { Label } from "@/components/ui/Label"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/Card"
-import { Alert } from "@/components/ui/Alert"
+} from "@/components/ui/card"
+import { Alert } from "@/components/ui/alert"
 import { Search, ArrowLeft, Sparkles } from "lucide-react"
 
 // ============================================================
@@ -267,3 +267,5 @@ export default function ResearchCreatePage() {
     </div>
   )
 }
+
+

@@ -4,11 +4,11 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { useMutation } from '@tanstack/react-query'
 import { researchApi } from '@/services/researchApi'
-import { Button } from '@/components/ui/Button'
-import { Input } from '@/components/ui/Input'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
 import { FormField } from '@/components/forms/FormField'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card'
-import { Alert } from '@/components/ui/Alert'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Alert } from '@/components/ui/alert'
 import { Search, Sparkles } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
@@ -141,3 +141,5 @@ export function GuestResearchForm() {
     </Card>
   )
 }
+
+

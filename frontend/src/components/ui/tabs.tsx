@@ -46,3 +46,5 @@ export function TabPanel({ value, children }: { value: string; children: ReactNo
   if (!context) throw new Error('TabPanel must be used within Tabs')
   return context.activeTab === value ? <div className="mt-4">{children}</div> : null
 }
+
+

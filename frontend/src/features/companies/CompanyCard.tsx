@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/Card'
-import { Button } from '@/components/ui/Button'
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
 import { Building2, ArrowRight } from 'lucide-react'
 import type { Company } from '@/types/auth'
 
@@ -37,3 +37,5 @@ export function CompanyCard({ company }: { company: Company }) {
     </Card>
   )
 }
+
+

@@ -16,7 +16,7 @@ import {
   MessageSquare,
   Send,
 } from 'lucide-react'
-import { Button } from '@/components/ui/Button'
+import { Button } from '@/components/ui/button'
 
 export function Sidebar() {
   const {  logoutCompany } = useAuth()
@@ -182,3 +182,5 @@ export function Sidebar() {
     </>
   )
 }
+
+

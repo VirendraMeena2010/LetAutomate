@@ -30,3 +30,5 @@ export function useCompanyAuth() {
 
   return { company, loginCompany, logoutCompany }
 }
+
+

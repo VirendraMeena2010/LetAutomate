@@ -1,4 +1,4 @@
-import { Card, CardContent } from '@/components/ui/Card'
+import { Card, CardContent } from '@/components/ui/card'
 
 export function ScoreCard({ score, label }: { score: number; label: string }) {
   const getColor = () => {
@@ -29,3 +29,5 @@ export function ScoreCard({ score, label }: { score: number; label: string }) {
 function cn(...classes: string[]) {
   return classes.filter(Boolean).join(' ')
 }
+
+
