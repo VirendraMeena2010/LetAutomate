@@ -49,7 +49,8 @@ app = FastAPI(
 
 origins = [ # Local development 
     "http://localhost:3000", "http://localhost:5173", "http://127.0.0.1:3000", "http://127.0.0.1:5173", # Production frontend 
-    "https://agentreach-psi.vercel.app", ]
+    "https://agentreach-psi.vercel.app", 
+    "https://agentreach-git-main-virendrameena2010s-projects.vercel.app",]
 
 app.add_middleware(
     CORSMiddleware,
