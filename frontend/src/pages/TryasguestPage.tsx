@@ -117,7 +117,7 @@ export default function GuestPage() {
         setResult(null);
 
         try {
-            const response = await fetch('http://127.0.0.1:8000/guestmode', {
+            const response = await fetch('https://agentreach-api.onrender.com/guestmode', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
