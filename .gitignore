@@ -22,7 +22,7 @@ ENV/
 
 # Logs
 *.log
-
+READ.md
 # Pytest
 .pytest_cache/
 .coverage
